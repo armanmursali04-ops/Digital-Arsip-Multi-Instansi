@@ -56,70 +56,68 @@
     </div>
 
     <!-- Table -->
-    <div class="bg-white rounded-lg border border-zinc-200 shadow-sm overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-zinc-200 text-sm">
-          <thead class="bg-zinc-50/80">
-            <tr>
-              <th v-if="canDeleteKategori" class="px-4 py-3 text-left w-10">
-                <input type="checkbox" :checked="allSelected" @change="toggleSelectAll" class="rounded border-zinc-300 text-zinc-900 focus:ring-zinc-950" />
-              </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Nama</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Badge</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Deskripsi</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Dibuat</th>
-              <th v-if="canUpdateKategori || canDeleteKategori" class="px-4 py-3 text-right text-xs font-medium text-zinc-500">Aksi</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-zinc-100 bg-white">
-            <tr v-for="item in filtered" :key="item.id" class="hover:bg-zinc-50/80 transition-colors">
-              <td v-if="canDeleteKategori" class="px-4 py-3.5">
-                <input
-                  v-model="selectedIds"
-                  type="checkbox"
-                  :value="item.id"
-                  :disabled="!app.canEditKategoriId(item.id)"
-                  class="rounded border-zinc-300 text-zinc-900 focus:ring-zinc-950 disabled:opacity-40"
-                />
-              </td>
-              <td class="px-4 py-3.5 font-medium text-zinc-950 whitespace-nowrap">{{ item.nama }}</td>
-              <td class="px-4 py-3.5 whitespace-nowrap">
-                <span
-                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-medium whitespace-nowrap"
-                  :style="computeBadgeStyle(item.color)"
-                >
-                  <span class="h-1.5 w-1.5 rounded-full shrink-0" :style="{ backgroundColor: item.color }"></span>
-                  <span>{{ item.nama }}</span>
-                </span>
-              </td>
-              <td class="px-4 py-3.5 text-zinc-600 max-w-md truncate">{{ item.deskripsi || '-' }}</td>
-              <td class="px-4 py-3.5 text-zinc-500 whitespace-nowrap tabular-nums">{{ formatDate(item.created_at) }}</td>
-              <td v-if="canUpdateKategori || canDeleteKategori" class="px-4 py-3.5 text-right whitespace-nowrap w-14">
-                <RowActionMenu
-                  :items="[
-                    {
-                      label: 'Edit Fungsi',
-                      onClick: () => openEdit(item),
-                      icon: 'edit',
-                      show: canUpdateKategori && app.canEditKategoriId(item.id)
-                    },
-                    {
-                      label: 'Hapus Fungsi',
-                      onClick: () => handleDelete(item.id),
-                      icon: 'delete',
-                      variant: 'danger',
-                      show: canDeleteKategori && app.canEditKategoriId(item.id)
-                    }
-                  ]"
-                />
-              </td>
-            </tr>
-            <tr v-if="filtered.length === 0">
-              <td :colspan="4 + (canDeleteKategori ? 1 : 0) + (canUpdateKategori || canDeleteKategori ? 1 : 0)" class="px-6 py-10 text-center text-zinc-500">Belum ada data fungsi arsip.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+      <table class="w-full table-fixed divide-y divide-slate-200 text-sm">
+        <thead class="bg-white">
+          <tr>
+            <th v-if="canDeleteKategori" class="px-3 py-3 text-left w-10">
+              <input type="checkbox" :checked="allSelected" @change="toggleSelectAll" class="rounded border-slate-300 text-[#1d4ed8]" />
+            </th>
+            <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600 w-44">Nama</th>
+            <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600 w-44">Badge</th>
+            <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600 hidden sm:table-cell">Deskripsi</th>
+            <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600 w-28">Dibuat</th>
+            <th v-if="canUpdateKategori || canDeleteKategori" class="px-3 py-3 text-right text-xs font-semibold text-slate-600 w-14">Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 bg-white">
+          <tr v-for="item in filtered" :key="item.id" class="hover:bg-slate-50/70 transition-colors">
+            <td v-if="canDeleteKategori" class="px-3 py-3">
+              <input
+                v-model="selectedIds"
+                type="checkbox"
+                :value="item.id"
+                :disabled="!app.canEditKategoriId(item.id)"
+                class="rounded border-slate-300 text-[#1d4ed8] disabled:opacity-40"
+              />
+            </td>
+            <td class="px-3 py-3 font-medium text-slate-900 truncate">{{ item.nama }}</td>
+            <td class="px-3 py-3 min-w-0">
+              <span
+                class="inline-flex max-w-full items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-medium"
+                :style="computeBadgeStyle(item.color)"
+              >
+                <span class="h-1.5 w-1.5 rounded-full shrink-0" :style="{ backgroundColor: item.color }"></span>
+                <span class="truncate">{{ item.nama }}</span>
+              </span>
+            </td>
+            <td class="px-3 py-3 text-slate-600 truncate hidden sm:table-cell">{{ item.deskripsi || '-' }}</td>
+            <td class="px-3 py-3 text-slate-500 text-xs whitespace-nowrap tabular-nums">{{ formatDate(item.created_at) }}</td>
+            <td v-if="canUpdateKategori || canDeleteKategori" class="px-3 py-3 text-right w-14">
+              <RowActionMenu
+                :items="[
+                  {
+                    label: 'Edit Fungsi',
+                    onClick: () => openEdit(item),
+                    icon: 'edit',
+                    show: canUpdateKategori && app.canEditKategoriId(item.id)
+                  },
+                  {
+                    label: 'Hapus Fungsi',
+                    onClick: () => handleDelete(item.id),
+                    icon: 'delete',
+                    variant: 'danger',
+                    show: canDeleteKategori && app.canEditKategoriId(item.id)
+                  }
+                ]"
+              />
+            </td>
+          </tr>
+          <tr v-if="filtered.length === 0">
+            <td :colspan="4 + (canDeleteKategori ? 1 : 0) + (canUpdateKategori || canDeleteKategori ? 1 : 0)" class="px-6 py-10 text-center text-slate-500">Belum ada data fungsi arsip.</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- Modal Form -->

@@ -120,122 +120,122 @@
     </div>
 
     <!-- Table -->
-    <div class="bg-white rounded-lg border border-zinc-200 shadow-sm overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-zinc-200 text-sm">
-          <thead class="bg-zinc-50/80">
-            <tr>
-              <th v-if="canDeleteArsip" class="px-4 py-3 text-left w-10">
-                <input
-                  type="checkbox"
-                  :checked="allPageSelected"
-                  @change="toggleSelectAll"
-                  class="rounded border-zinc-300 text-zinc-900 focus:ring-zinc-950"
-                />
-              </th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Dokumen</th>
-              <th class="px-3 py-3 text-left text-xs font-medium text-zinc-500">Format</th>
-              <th class="px-3 py-3 text-left text-xs font-medium text-zinc-500">Fungsi</th>
-              <th class="px-3 py-3 text-left text-xs font-medium text-zinc-500 hidden md:table-cell">Subjek</th>
-              <th class="px-3 py-3 text-left text-xs font-medium text-zinc-500 hidden xl:table-cell">Pengunggah</th>
-              <th class="px-3 py-3 text-left text-xs font-medium text-zinc-500">Tanggal</th>
-              <th class="px-4 py-3 text-right text-xs font-medium text-zinc-500 w-12">Aksi</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-zinc-100 bg-white">
-            <tr v-for="item in paginated" :key="item.id" class="hover:bg-zinc-50/80 transition-colors">
-              <td v-if="canDeleteArsip" class="px-4 py-3 align-middle w-10">
-                <input
-                  v-model="selectedIds"
-                  type="checkbox"
-                  :value="item.id"
-                  class="rounded border-zinc-300 text-zinc-900 focus:ring-zinc-950"
-                />
-              </td>
-              <td class="px-4 py-3">
-                <NuxtLink :to="`/dashboard/arsip/${item.id}`" class="flex items-center gap-3 group min-w-0 max-w-[190px] sm:max-w-[230px] xl:max-w-[260px]">
-                  <FileTypeIcon :type="getDocType(item)" :show-label="false" size="sm" />
-                  <div class="min-w-0 flex-1">
-                    <div class="font-medium text-zinc-950 group-hover:underline truncate transition-colors" :title="item.judul">
-                      {{ item.judul }}
-                    </div>
-                    <div class="text-xs text-zinc-500 truncate mt-0.5" :title="item.original_file_name || item.file_path">
-                      {{ item.original_file_name || item.file_path }}
-                    </div>
+    <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+      <table class="w-full table-fixed divide-y divide-slate-200 text-sm">
+        <thead class="bg-white">
+          <tr>
+            <th v-if="canDeleteArsip" class="px-3 py-3 text-left w-10">
+              <input
+                type="checkbox"
+                :checked="allPageSelected"
+                @change="toggleSelectAll"
+                class="rounded border-slate-300 text-[#1d4ed8]"
+              />
+            </th>
+            <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600">Dokumen</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-24">Format</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-36">Fungsi</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-44 hidden md:table-cell">Subjek</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-28 hidden lg:table-cell">Pengunggah</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-28">Tanggal</th>
+            <th class="px-3 py-3 text-right text-xs font-semibold text-slate-600 w-14">Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 bg-white">
+          <tr v-for="item in paginated" :key="item.id" class="hover:bg-slate-50/70 transition-colors">
+            <td v-if="canDeleteArsip" class="px-3 py-3 align-middle w-10">
+              <input
+                v-model="selectedIds"
+                type="checkbox"
+                :value="item.id"
+                class="rounded border-slate-300 text-[#1d4ed8]"
+              />
+            </td>
+            <td class="px-3 py-3 min-w-0">
+              <NuxtLink :to="`/dashboard/arsip/${item.id}`" class="flex items-center gap-2.5 group min-w-0">
+                <FileTypeIcon :type="getDocType(item)" :show-label="false" size="sm" />
+                <div class="min-w-0 flex-1">
+                  <div class="font-medium text-slate-900 group-hover:text-[#1d4ed8] truncate transition-colors" :title="item.judul">
+                    {{ item.judul }}
                   </div>
-                </NuxtLink>
-              </td>
-              <td class="px-3 py-3 whitespace-nowrap">
-                <FileTypeIcon :type="getDocType(item)" size="sm" />
-              </td>
-              <td class="px-3 py-3 whitespace-nowrap">
+                  <div class="text-xs text-slate-500 truncate mt-0.5" :title="item.original_file_name || item.file_path">
+                    {{ item.original_file_name || item.file_path }}
+                  </div>
+                </div>
+              </NuxtLink>
+            </td>
+            <td class="px-2.5 py-3">
+              <FileTypeIcon :type="getDocType(item)" size="sm" />
+            </td>
+            <td class="px-2.5 py-3 min-w-0">
+              <span
+                v-if="app.getKategori(item.kategori_id)"
+                class="inline-flex max-w-full items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium"
+                :style="computeBadgeStyle(app.getKategori(item.kategori_id)?.color)"
+                :title="app.getKategori(item.kategori_id)?.nama"
+              >
                 <span
-                  v-if="app.getKategori(item.kategori_id)"
-                  class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-medium"
-                  :style="computeBadgeStyle(app.getKategori(item.kategori_id)?.color)"
-                >
-                  <span
-                    class="h-1.5 w-1.5 rounded-full shrink-0"
-                    :style="{ backgroundColor: app.getKategori(item.kategori_id)?.color || '#64748b' }"
-                  />
-                  <span>{{ app.getKategori(item.kategori_id)?.nama }}</span>
-                </span>
-                <span v-else class="text-xs text-slate-400">-</span>
-              </td>
-              <td class="px-3 py-3 whitespace-nowrap hidden md:table-cell">
+                  class="h-1.5 w-1.5 rounded-full shrink-0"
+                  :style="{ backgroundColor: app.getKategori(item.kategori_id)?.color || '#64748b' }"
+                />
+                <span class="truncate">{{ app.getKategori(item.kategori_id)?.nama }}</span>
+              </span>
+              <span v-else class="text-xs text-slate-400">-</span>
+            </td>
+            <td class="px-2.5 py-3 hidden md:table-cell min-w-0">
+              <span
+                v-if="app.getSubjek(item.subjek_id)"
+                class="inline-flex max-w-full items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium"
+                :style="computeBadgeStyle(app.getSubjek(item.subjek_id)?.color)"
+                :title="app.getSubjek(item.subjek_id)?.nama"
+              >
                 <span
-                  v-if="app.getSubjek(item.subjek_id)"
-                  class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-medium"
-                  :style="computeBadgeStyle(app.getSubjek(item.subjek_id)?.color)"
-                >
-                  <span
-                    class="h-1.5 w-1.5 rounded-full shrink-0"
-                    :style="{ backgroundColor: app.getSubjek(item.subjek_id)?.color || '#64748b' }"
-                  />
-                  <span>{{ app.getSubjek(item.subjek_id)?.nama }}</span>
-                </span>
-                <span v-else class="text-xs text-slate-400">-</span>
-              </td>
-              <td class="px-3 py-3 whitespace-nowrap hidden xl:table-cell text-slate-600 text-xs">
-                {{ app.getUserName(item) }}
-              </td>
-              <td class="px-3 py-3 whitespace-nowrap text-slate-500 text-xs tabular-nums">
-                {{ formatDate(item.created_at) }}
-              </td>
-              <td class="px-4 py-3 whitespace-nowrap text-right w-12">
-                <RowActionMenu :items="rowActions(item)" />
-              </td>
-            </tr>
-            <tr v-if="paginated.length === 0">
-              <td :colspan="canDeleteArsip ? 8 : 7" class="px-6 py-12 text-center text-sm text-slate-500">
-                Tidak ada arsip yang sesuai dengan filter.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                  class="h-1.5 w-1.5 rounded-full shrink-0"
+                  :style="{ backgroundColor: app.getSubjek(item.subjek_id)?.color || '#64748b' }"
+                />
+                <span class="truncate">{{ app.getSubjek(item.subjek_id)?.nama }}</span>
+              </span>
+              <span v-else class="text-xs text-slate-400">-</span>
+            </td>
+            <td class="px-2.5 py-3 hidden lg:table-cell text-slate-600 text-xs truncate" :title="app.getUserName(item)">
+              {{ app.getUserName(item) }}
+            </td>
+            <td class="px-2.5 py-3 text-slate-500 text-xs tabular-nums whitespace-nowrap">
+              {{ formatDate(item.created_at) }}
+            </td>
+            <td class="px-3 py-3 text-right w-14">
+              <RowActionMenu :items="rowActions(item)" />
+            </td>
+          </tr>
+          <tr v-if="paginated.length === 0">
+            <td :colspan="canDeleteArsip ? 8 : 7" class="px-6 py-12 text-center text-sm text-slate-500">
+              Tidak ada arsip yang sesuai dengan filter.
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <!-- Pagination -->
-      <div class="px-4 sm:px-5 py-3.5 bg-zinc-50/60 border-t border-zinc-200 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-zinc-600">
+      <div class="px-4 sm:px-5 py-3.5 bg-white border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-slate-600">
         <div class="tabular-nums text-xs sm:text-sm">
-          Menampilkan <span class="font-medium text-zinc-950">{{ paginated.length }}</span> dari
-          <span class="font-medium text-zinc-950">{{ filtered.length }}</span> arsip
+          Menampilkan <span class="font-medium text-slate-900">{{ paginated.length }}</span> dari
+          <span class="font-medium text-slate-900">{{ filtered.length }}</span> arsip
         </div>
         <div class="flex items-center gap-2">
           <button
             type="button"
             :disabled="page <= 1"
             @click="page--"
-            class="px-3 py-1.5 rounded-md border border-zinc-200 bg-white text-xs font-medium text-zinc-900 shadow-sm disabled:opacity-40 hover:bg-zinc-100 transition-colors"
+            class="px-3 py-1.5 rounded border border-slate-200 bg-white text-xs font-medium text-slate-700 disabled:opacity-40 hover:bg-slate-50 transition-colors"
           >
             Sebelumnya
           </button>
-          <span class="text-xs font-medium text-zinc-700 tabular-nums px-1">Hal {{ page }} / {{ totalPages }}</span>
+          <span class="text-xs font-medium text-slate-700 tabular-nums px-1">Hal {{ page }} / {{ totalPages }}</span>
           <button
             type="button"
             :disabled="page >= totalPages"
             @click="page++"
-            class="px-3 py-1.5 rounded-md border border-zinc-200 bg-white text-xs font-medium text-zinc-900 shadow-sm disabled:opacity-40 hover:bg-zinc-100 transition-colors"
+            class="px-3 py-1.5 rounded border border-slate-200 bg-white text-xs font-medium text-slate-700 disabled:opacity-40 hover:bg-slate-50 transition-colors"
           >
             Berikutnya
           </button>

@@ -61,107 +61,105 @@
     </div>
 
     <!-- Table -->
-    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 text-sm">
-          <thead class="bg-gray-50">
-            <tr>
-              <th v-if="canRestoreArsip || canForceDeleteArsip" class="px-4 py-3 text-left w-10">
-                <input
-                  type="checkbox"
-                  :checked="allSelected"
-                  @change="toggleSelectAll"
-                  class="rounded border-gray-300 text-primary-600"
-                />
-              </th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Judul Arsip</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Kategori</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase hidden md:table-cell">Subjek</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase hidden lg:table-cell">Pengunggah</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Tanggal Dihapus</th>
-              <th class="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase w-14">Aksi</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-100 bg-white">
-            <tr v-for="item in filtered" :key="item.id" class="hover:bg-gray-50">
-              <td v-if="canRestoreArsip || canForceDeleteArsip" class="px-4 py-3">
-                <input
-                  v-model="selectedIds"
-                  type="checkbox"
-                  :value="item.id"
-                  :disabled="!app.canEditKategoriId(item.kategori_id)"
-                  class="rounded border-gray-300 text-primary-600 disabled:opacity-40"
-                />
-              </td>
-              <td class="px-4 py-3 font-medium text-gray-900">
-                <NuxtLink :to="`/dashboard/arsip/${item.id}`" class="flex items-center gap-2.5 group">
-                  <FileTypeIcon :type="getDocType(item)" size="sm" />
-                  <span class="group-hover:text-primary-600 transition-colors">{{ item.judul }}</span>
-                </NuxtLink>
-              </td>
-              <td class="px-4 py-3 whitespace-nowrap">
+    <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+      <table class="w-full table-fixed divide-y divide-slate-200 text-sm">
+        <thead class="bg-white">
+          <tr>
+            <th v-if="canRestoreArsip || canForceDeleteArsip" class="px-3 py-3 text-left w-10">
+              <input
+                type="checkbox"
+                :checked="allSelected"
+                @change="toggleSelectAll"
+                class="rounded border-slate-300 text-[#1d4ed8]"
+              />
+            </th>
+            <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600">Judul Arsip</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-36">Kategori</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-40 hidden md:table-cell">Subjek</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-28 hidden lg:table-cell">Pengunggah</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-36">Tanggal Dihapus</th>
+            <th class="px-3 py-3 text-right text-xs font-semibold text-slate-600 w-14">Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 bg-white">
+          <tr v-for="item in filtered" :key="item.id" class="hover:bg-slate-50/70">
+            <td v-if="canRestoreArsip || canForceDeleteArsip" class="px-3 py-3">
+              <input
+                v-model="selectedIds"
+                type="checkbox"
+                :value="item.id"
+                :disabled="!app.canEditKategoriId(item.kategori_id)"
+                class="rounded border-slate-300 text-[#1d4ed8] disabled:opacity-40"
+              />
+            </td>
+            <td class="px-3 py-3 font-medium text-slate-900 min-w-0">
+              <NuxtLink :to="`/dashboard/arsip/${item.id}`" class="flex items-center gap-2.5 group min-w-0">
+                <FileTypeIcon :type="getDocType(item)" size="sm" />
+                <span class="group-hover:text-[#1d4ed8] truncate transition-colors" :title="item.judul">{{ item.judul }}</span>
+              </NuxtLink>
+            </td>
+            <td class="px-2.5 py-3 min-w-0">
+              <span
+                v-if="app.getKategori(item.kategori_id)"
+                class="inline-flex max-w-full items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium"
+                :style="computeBadgeStyle(app.getKategori(item.kategori_id)?.color)"
+              >
                 <span
-                  v-if="app.getKategori(item.kategori_id)"
-                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-medium"
-                  :style="computeBadgeStyle(app.getKategori(item.kategori_id)?.color)"
-                >
-                  <span
-                    class="h-1.5 w-1.5 rounded-full shrink-0"
-                    :style="{ backgroundColor: app.getKategori(item.kategori_id)?.color || '#64748b' }"
-                  />
-                  <span>{{ app.getKategori(item.kategori_id)?.nama }}</span>
-                </span>
-                <span v-else class="text-xs text-slate-400">-</span>
-              </td>
-              <td class="px-4 py-3 whitespace-nowrap hidden md:table-cell">
-                <span
-                  v-if="app.getSubjek(item.subjek_id)"
-                  class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-medium"
-                  :style="computeBadgeStyle(app.getSubjek(item.subjek_id)?.color)"
-                >
-                  <span
-                    class="h-1.5 w-1.5 rounded-full shrink-0"
-                    :style="{ backgroundColor: app.getSubjek(item.subjek_id)?.color || '#64748b' }"
-                  />
-                  <span>{{ app.getSubjek(item.subjek_id)?.nama }}</span>
-                </span>
-                <span v-else class="text-xs text-slate-400">-</span>
-              </td>
-              <td class="px-4 py-3 text-slate-600 hidden lg:table-cell whitespace-nowrap text-xs">{{ app.getUserName(item) }}</td>
-              <td class="px-4 py-3 text-slate-500 whitespace-nowrap text-xs tabular-nums">{{ formatDateTime(item.deleted_at) }}</td>
-              <td class="px-4 py-3 text-right whitespace-nowrap w-14">
-                <RowActionMenu
-                  :items="[
-                    {
-                      label: 'Lihat Detail',
-                      to: `/dashboard/arsip/${item.id}`,
-                      icon: 'view'
-                    },
-                    {
-                      label: 'Pulihkan Arsip',
-                      onClick: () => handleRestore(item.id),
-                      icon: 'restore',
-                      show: canRestoreArsip && app.canEditKategoriId(item.kategori_id)
-                    },
-                    {
-                      label: 'Hapus Permanen',
-                      onClick: () => handleForceDelete(item.id),
-                      icon: 'delete',
-                      variant: 'danger',
-                      show: canForceDeleteArsip && app.canEditKategoriId(item.kategori_id)
-                    }
-                  ]"
+                  class="h-1.5 w-1.5 rounded-full shrink-0"
+                  :style="{ backgroundColor: app.getKategori(item.kategori_id)?.color || '#64748b' }"
                 />
-              </td>
-            </tr>
-            <tr v-if="filtered.length === 0">
-              <td :colspan="(canRestoreArsip || canForceDeleteArsip) ? 7 : 6" class="px-6 py-10 text-center text-gray-500">
-                Trash Arsip kosong.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                <span class="truncate">{{ app.getKategori(item.kategori_id)?.nama }}</span>
+              </span>
+              <span v-else class="text-xs text-slate-400">-</span>
+            </td>
+            <td class="px-2.5 py-3 hidden md:table-cell min-w-0">
+              <span
+                v-if="app.getSubjek(item.subjek_id)"
+                class="inline-flex max-w-full items-center gap-1.5 px-2 py-0.5 rounded text-xs font-medium"
+                :style="computeBadgeStyle(app.getSubjek(item.subjek_id)?.color)"
+              >
+                <span
+                  class="h-1.5 w-1.5 rounded-full shrink-0"
+                  :style="{ backgroundColor: app.getSubjek(item.subjek_id)?.color || '#64748b' }"
+                />
+                <span class="truncate">{{ app.getSubjek(item.subjek_id)?.nama }}</span>
+              </span>
+              <span v-else class="text-xs text-slate-400">-</span>
+            </td>
+            <td class="px-2.5 py-3 text-slate-600 hidden lg:table-cell truncate text-xs">{{ app.getUserName(item) }}</td>
+            <td class="px-2.5 py-3 text-slate-500 whitespace-nowrap text-xs tabular-nums">{{ formatDateTime(item.deleted_at) }}</td>
+            <td class="px-3 py-3 text-right w-14">
+              <RowActionMenu
+                :items="[
+                  {
+                    label: 'Lihat Detail',
+                    to: `/dashboard/arsip/${item.id}`,
+                    icon: 'view'
+                  },
+                  {
+                    label: 'Pulihkan Arsip',
+                    onClick: () => handleRestore(item.id),
+                    icon: 'restore',
+                    show: canRestoreArsip && app.canEditKategoriId(item.kategori_id)
+                  },
+                  {
+                    label: 'Hapus Permanen',
+                    onClick: () => handleForceDelete(item.id),
+                    icon: 'delete',
+                    variant: 'danger',
+                    show: canForceDeleteArsip && app.canEditKategoriId(item.kategori_id)
+                  }
+                ]"
+              />
+            </td>
+          </tr>
+          <tr v-if="filtered.length === 0">
+            <td :colspan="(canRestoreArsip || canForceDeleteArsip) ? 7 : 6" class="px-6 py-10 text-center text-slate-500">
+              Trash Arsip kosong.
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>

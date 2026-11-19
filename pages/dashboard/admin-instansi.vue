@@ -47,73 +47,71 @@
     </div>
 
     <!-- Table -->
-    <div class="bg-white rounded-lg border border-zinc-200 shadow-sm overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-zinc-200 text-sm">
-          <thead class="bg-zinc-50/80">
-            <tr>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Nama Admin</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Email</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Instansi / Sekolah</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">URL Login Instansi</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Dibuat</th>
-              <th class="px-4 py-3 text-right text-xs font-medium text-zinc-500 w-14">Aksi</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-zinc-100 bg-white">
-            <tr v-for="adm in filtered" :key="adm.id" class="hover:bg-zinc-50/80 transition-colors">
-              <td class="px-4 py-3.5 font-medium text-zinc-950 whitespace-nowrap">{{ adm.name }}</td>
-              <td class="px-4 py-3.5 text-zinc-600 whitespace-nowrap">{{ adm.email }}</td>
-              <td class="px-4 py-3.5 whitespace-nowrap">
-                <span
-                  v-if="instansiOf(adm)"
-                  class="inline-flex items-center gap-1.5 rounded-md border border-zinc-200 bg-zinc-50 px-2.5 py-0.5 text-xs font-medium text-zinc-800"
-                >
-                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                  <span>{{ instansiOf(adm)?.nama }}</span>
-                </span>
-                <span v-else class="text-xs text-rose-600">Belum terhubung</span>
-              </td>
-              <td class="px-4 py-3.5 whitespace-nowrap">
-                <NuxtLink
-                  v-if="instansiOf(adm)"
-                  :to="`/${instansiOf(adm)?.slug}/login`"
-                  target="_blank"
-                  class="text-xs font-mono text-sky-700 hover:underline"
-                >
-                  /{{ instansiOf(adm)?.slug }}/login
-                </NuxtLink>
-                <span v-else class="text-xs text-zinc-400">-</span>
-              </td>
-              <td class="px-4 py-3.5 text-zinc-500 whitespace-nowrap text-xs tabular-nums">
-                {{ formatDate(adm.created_at) }}
-              </td>
-              <td class="px-4 py-3.5 text-right whitespace-nowrap w-14">
-                <RowActionMenu
-                  :items="[
-                    {
-                      label: 'Edit Admin',
-                      onClick: () => openEdit(adm),
-                      icon: 'edit'
-                    },
-                    {
-                      label: 'Hapus Admin',
-                      onClick: () => handleDelete(adm),
-                      icon: 'delete',
-                      variant: 'danger'
-                    }
-                  ]"
-                />
-              </td>
-            </tr>
-            <tr v-if="filtered.length === 0">
-              <td colspan="6" class="px-6 py-10 text-center text-zinc-500">
-                Belum ada akun Admin Instansi yang terdaftar.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+      <table class="w-full table-fixed divide-y divide-slate-200 text-sm">
+        <thead class="bg-white">
+          <tr>
+            <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600">Nama Admin</th>
+            <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600">Email</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-44">Instansi / Sekolah</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-44 hidden md:table-cell">URL Login Instansi</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-28 hidden sm:table-cell">Dibuat</th>
+            <th class="px-3 py-3 text-right text-xs font-semibold text-slate-600 w-14">Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 bg-white">
+          <tr v-for="adm in filtered" :key="adm.id" class="hover:bg-slate-50/70 transition-colors">
+            <td class="px-3 py-3 font-medium text-slate-900 truncate">{{ adm.name }}</td>
+            <td class="px-3 py-3 text-slate-600 truncate">{{ adm.email }}</td>
+            <td class="px-2.5 py-3 min-w-0">
+              <span
+                v-if="instansiOf(adm)"
+                class="inline-flex max-w-full items-center gap-1.5 rounded border border-slate-200 bg-white px-2 py-0.5 text-xs font-medium text-slate-800"
+              >
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                <span class="truncate">{{ instansiOf(adm)?.nama }}</span>
+              </span>
+              <span v-else class="text-xs text-rose-600">Belum terhubung</span>
+            </td>
+            <td class="px-2.5 py-3 hidden md:table-cell truncate">
+              <NuxtLink
+                v-if="instansiOf(adm)"
+                :to="`/${instansiOf(adm)?.slug}/login`"
+                target="_blank"
+                class="text-xs font-mono text-[#1d4ed8] hover:underline truncate"
+              >
+                /{{ instansiOf(adm)?.slug }}/login
+              </NuxtLink>
+              <span v-else class="text-xs text-slate-400">-</span>
+            </td>
+            <td class="px-2.5 py-3 text-slate-500 text-xs tabular-nums hidden sm:table-cell">
+              {{ formatDate(adm.created_at) }}
+            </td>
+            <td class="px-3 py-3 text-right w-14">
+              <RowActionMenu
+                :items="[
+                  {
+                    label: 'Edit Admin',
+                    onClick: () => openEdit(adm),
+                    icon: 'edit'
+                  },
+                  {
+                    label: 'Hapus Admin',
+                    onClick: () => handleDelete(adm),
+                    icon: 'delete',
+                    variant: 'danger'
+                  }
+                ]"
+              />
+            </td>
+          </tr>
+          <tr v-if="filtered.length === 0">
+            <td colspan="6" class="px-6 py-10 text-center text-slate-500">
+              Belum ada akun Admin Instansi yang terdaftar.
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- Modal Form -->

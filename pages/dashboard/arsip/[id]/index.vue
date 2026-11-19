@@ -77,7 +77,7 @@
           {{ record.deskripsi }}
         </p>
 
-        <dl class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3 bg-gray-50 border border-gray-200 rounded-lg p-4 text-sm">
+        <dl class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-3 bg-white border border-slate-200 rounded-lg p-4 text-sm">
           <div>
             <dt class="text-xs font-medium text-gray-500">Judul Arsip</dt>
             <dd class="mt-0.5 font-semibold text-gray-900">{{ record.judul }}</dd>
@@ -203,54 +203,52 @@
           <p class="text-sm text-gray-500 mt-1">Setiap pembaruan pada arsip ini akan dicatat di sini.</p>
         </div>
 
-        <div v-else class="bg-white border border-gray-200 rounded-lg overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200 text-sm">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Versi</th>
-                  <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Judul &amp; File</th>
-                  <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Diubah oleh</th>
-                  <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Tanggal Versi</th>
-                  <th class="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase">Aksi</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-100">
-                <tr v-for="v in pagedVersions" :key="v.id" class="hover:bg-gray-50">
-                  <td class="px-4 py-3 whitespace-nowrap">
-                    <span class="inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-full bg-primary-50 text-primary-700">
-                      v{{ v.version }}
-                    </span>
-                  </td>
-                  <td class="px-4 py-3">
-                    <div class="flex items-center gap-2.5">
-                      <FileTypeIcon :file-name="v.original_file_name || v.file_path" :show-label="false" size="sm" />
-                      <div class="min-w-0">
-                        <div class="font-medium text-gray-900 truncate max-w-md">{{ v.judul }}</div>
-                        <div class="text-xs text-gray-500 truncate">{{ v.original_file_name || v.file_path }}</div>
-                      </div>
+        <div v-else class="bg-white border border-slate-200 rounded-lg overflow-hidden">
+          <table class="w-full table-fixed divide-y divide-slate-200 text-sm">
+            <thead class="bg-white">
+              <tr>
+                <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600 w-20">Versi</th>
+                <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600">Judul &amp; File</th>
+                <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-36 hidden sm:table-cell">Diubah oleh</th>
+                <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-36">Tanggal Versi</th>
+                <th class="px-3 py-3 text-right text-xs font-semibold text-slate-600 w-20">Aksi</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 bg-white">
+              <tr v-for="v in pagedVersions" :key="v.id" class="hover:bg-slate-50/70">
+                <td class="px-3 py-3">
+                  <span class="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded border border-slate-200 bg-white text-[#1d4ed8]">
+                    v{{ v.version }}
+                  </span>
+                </td>
+                <td class="px-3 py-3 min-w-0">
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <FileTypeIcon :file-name="v.original_file_name || v.file_path" :show-label="false" size="sm" />
+                    <div class="min-w-0 flex-1">
+                      <div class="font-medium text-slate-900 truncate">{{ v.judul }}</div>
+                      <div class="text-xs text-slate-500 truncate">{{ v.original_file_name || v.file_path }}</div>
                     </div>
-                  </td>
-                  <td class="px-4 py-3 whitespace-nowrap text-gray-600">{{ app.getUserName(v) }}</td>
-                  <td class="px-4 py-3 whitespace-nowrap text-gray-600">{{ formatDateTime(v.created_at) }}</td>
-                  <td class="px-4 py-3 text-right">
-                    <button
-                      type="button"
-                      @click="app.downloadFile(v.file_path, v.original_file_name)"
-                      class="text-xs font-semibold text-primary-600 hover:underline"
-                    >
-                      Unduh
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between text-xs text-gray-600">
+                  </div>
+                </td>
+                <td class="px-2.5 py-3 text-xs text-slate-600 truncate hidden sm:table-cell">{{ app.getUserName(v) }}</td>
+                <td class="px-2.5 py-3 text-xs text-slate-500 whitespace-nowrap tabular-nums">{{ formatDateTime(v.created_at) }}</td>
+                <td class="px-3 py-3 text-right">
+                  <button
+                    type="button"
+                    @click="app.downloadFile(v.file_path, v.original_file_name)"
+                    class="text-xs font-semibold text-[#1d4ed8] hover:underline"
+                  >
+                    Unduh
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="px-4 py-3 bg-white border-t border-slate-200 flex items-center justify-between text-xs text-slate-600">
             <span>Menampilkan {{ pagedVersions.length }} dari {{ recordVersions.length }} versi</span>
             <div class="flex gap-2">
-              <button type="button" :disabled="versionPage <= 1" @click="versionPage--" class="px-2.5 py-1 rounded border bg-white disabled:opacity-40">Prev</button>
-              <button type="button" :disabled="versionPage >= versionTotalPages" @click="versionPage++" class="px-2.5 py-1 rounded border bg-white disabled:opacity-40">Next</button>
+              <button type="button" :disabled="versionPage <= 1" @click="versionPage--" class="px-2.5 py-1 rounded border border-slate-200 bg-white disabled:opacity-40">Prev</button>
+              <button type="button" :disabled="versionPage >= versionTotalPages" @click="versionPage++" class="px-2.5 py-1 rounded border border-slate-200 bg-white disabled:opacity-40">Next</button>
             </div>
           </div>
         </div>

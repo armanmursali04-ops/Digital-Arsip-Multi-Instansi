@@ -1,5 +1,5 @@
 <template>
-  <div class="shadcn-admin min-h-screen bg-[#f8fafc] text-slate-900">
+  <div class="shadcn-admin min-h-screen bg-white text-slate-900">
     <!-- Mobile Sidebar Backdrop -->
     <Transition
       enter-active-class="transition-opacity duration-150 ease-out"

@@ -32,7 +32,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#f8fafc] text-slate-900 antialiased selection:bg-[#1d4ed8] selection:text-white">
+  <div class="min-h-screen bg-white text-slate-900 antialiased selection:bg-[#1d4ed8] selection:text-white">
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
@@ -106,7 +106,7 @@ summary::-webkit-details-marker {
 }
 
 .shadcn-admin table thead {
-  background-color: #f8fafc;
+  background-color: #ffffff;
   border-bottom: 1px solid #e2e8f0;
 }
 

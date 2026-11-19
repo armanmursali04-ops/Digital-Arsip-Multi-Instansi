@@ -51,7 +51,7 @@
           </div>
 
           <!-- Category Scope Summary -->
-          <div class="rounded-md bg-zinc-50 border border-zinc-200 p-3 space-y-2.5 text-xs">
+          <div class="rounded-md bg-white border border-slate-200 p-3 space-y-2.5 text-xs">
             <div>
               <div class="font-medium text-zinc-700 mb-1">Cakupan Data Dilihat</div>
               <div v-if="r.name === 'admin'" class="text-zinc-600">Semua kategori &amp; seluruh data instansi</div>
@@ -176,7 +176,7 @@
               <div
                 v-for="group in PERMISSION_GROUPS"
                 :key="group.title"
-                class="rounded-md border border-zinc-200 p-3.5 space-y-2.5 bg-zinc-50/50"
+                class="rounded-md border border-slate-200 p-3.5 space-y-2.5 bg-white"
               >
                 <div class="text-xs font-semibold text-zinc-600">{{ group.title }}</div>
                 <div class="space-y-1.5">

@@ -80,65 +80,63 @@
             Kelola Semua Instansi &rarr;
           </NuxtLink>
         </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-zinc-200 text-sm">
-            <thead class="bg-zinc-50/80">
-              <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500">Instansi</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500">URL Landing Page</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500">URL Login Instansi</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500">Jumlah User</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500">Jumlah Arsip</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-zinc-100 bg-white">
-              <tr v-for="inst in instansis" :key="inst.id" class="hover:bg-zinc-50/80 transition-colors">
-                <td class="px-6 py-3.5">
-                  <div class="flex items-center gap-3">
-                    <img
-                      :src="app.getInstansiLogoUrl(inst)"
-                      :alt="inst.nama"
-                      class="h-8 w-8 rounded-md object-cover border border-zinc-200 bg-white shrink-0"
-                    />
-                    <div>
-                      <div class="font-medium text-zinc-950">{{ inst.nama }}</div>
-                      <div class="text-xs text-zinc-500 truncate max-w-xs">{{ inst.slogan || '-' }}</div>
-                    </div>
+        <table class="w-full table-fixed divide-y divide-slate-200 text-sm">
+          <thead class="bg-white">
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">Instansi</th>
+              <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600 w-44">URL Landing Page</th>
+              <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600 w-44 hidden md:table-cell">URL Login Instansi</th>
+              <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600 w-28">Jumlah User</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 w-28">Jumlah Arsip</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 bg-white">
+            <tr v-for="inst in instansis" :key="inst.id" class="hover:bg-slate-50/70 transition-colors">
+              <td class="px-4 py-3 min-w-0">
+                <div class="flex items-center gap-3 min-w-0">
+                  <img
+                    :src="app.getInstansiLogoUrl(inst)"
+                    :alt="inst.nama"
+                    class="h-8 w-8 rounded object-cover border border-slate-200 bg-white shrink-0"
+                  />
+                  <div class="min-w-0 flex-1">
+                    <div class="font-medium text-slate-900 truncate">{{ inst.nama }}</div>
+                    <div class="text-xs text-slate-500 truncate">{{ inst.slogan || '-' }}</div>
                   </div>
-                </td>
-                <td class="px-6 py-3.5">
-                  <NuxtLink
-                    :to="`/${inst.slug}`"
-                    target="_blank"
-                    class="inline-flex items-center gap-1 rounded border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-xs font-mono text-zinc-800 hover:bg-zinc-100"
-                  >
-                    /{{ inst.slug }} &nearr;
-                  </NuxtLink>
-                </td>
-                <td class="px-6 py-3.5">
-                  <NuxtLink
-                    :to="`/${inst.slug}/login`"
-                    target="_blank"
-                    class="text-xs font-mono text-sky-700 hover:underline"
-                  >
-                    /{{ inst.slug }}/login
-                  </NuxtLink>
-                </td>
-                <td class="px-6 py-3.5 text-xs text-zinc-700 tabular-nums">
-                  {{ allUsers.filter((u) => app.resolveEntityInstansiId('user', u) === inst.id).length }} user
-                </td>
-                <td class="px-6 py-3.5 text-xs text-zinc-700 tabular-nums">
-                  {{ allArsips.filter((a) => !a.deleted_at && app.resolveEntityInstansiId('arsip', a) === inst.id).length }} arsip
-                </td>
-              </tr>
-              <tr v-if="instansis.length === 0">
-                <td colspan="5" class="px-6 py-10 text-center text-sm text-zinc-500">
-                  Belum ada instansi terdaftar. Silakan buka menu <strong>Kelola Instansi</strong> untuk menambahkan instansi pertama.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                </div>
+              </td>
+              <td class="px-3 py-3 min-w-0">
+                <NuxtLink
+                  :to="`/${inst.slug}`"
+                  target="_blank"
+                  class="inline-flex max-w-full items-center gap-1 rounded border border-slate-200 bg-white px-2 py-0.5 text-xs font-mono text-slate-800 hover:bg-slate-50"
+                >
+                  <span class="truncate">/{{ inst.slug }}</span> &nearr;
+                </NuxtLink>
+              </td>
+              <td class="px-3 py-3 hidden md:table-cell truncate">
+                <NuxtLink
+                  :to="`/${inst.slug}/login`"
+                  target="_blank"
+                  class="text-xs font-mono text-[#1d4ed8] hover:underline truncate"
+                >
+                  /{{ inst.slug }}/login
+                </NuxtLink>
+              </td>
+              <td class="px-3 py-3 text-xs text-slate-700 tabular-nums">
+                {{ allUsers.filter((u) => app.resolveEntityInstansiId('user', u) === inst.id).length }} user
+              </td>
+              <td class="px-4 py-3 text-xs text-slate-700 tabular-nums">
+                {{ allArsips.filter((a) => !a.deleted_at && app.resolveEntityInstansiId('arsip', a) === inst.id).length }} arsip
+              </td>
+            </tr>
+            <tr v-if="instansis.length === 0">
+              <td colspan="5" class="px-6 py-10 text-center text-sm text-slate-500">
+                Belum ada instansi terdaftar. Silakan buka menu <strong>Data Instansi</strong> untuk menambahkan instansi pertama.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </template>
 
@@ -310,42 +308,40 @@
             Lihat Semua Arsip &rarr;
           </NuxtLink>
         </div>
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-zinc-200 text-sm">
-            <thead class="bg-zinc-50/80">
-              <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500">Pengguna</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500">Email</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500">Total Arsip</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-zinc-500">Upload Terakhir</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-zinc-100 bg-white">
-              <tr v-for="row in recentUploadUsers" :key="row.id" class="hover:bg-zinc-50/80 transition-colors">
-                <td class="px-6 py-3.5">
-                  <div class="flex items-center gap-3">
-                    <div class="h-8 w-8 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-700 font-medium text-xs flex items-center justify-center shrink-0">
-                      {{ initialsOf(row.name) }}
-                    </div>
-                    <span class="font-medium text-zinc-950">{{ row.name }}</span>
+        <table class="w-full table-fixed divide-y divide-slate-200 text-sm">
+          <thead class="bg-white">
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600">Pengguna</th>
+              <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600 hidden sm:table-cell">Email</th>
+              <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600 w-32">Total Arsip</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-slate-600 w-40">Upload Terakhir</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 bg-white">
+            <tr v-for="row in recentUploadUsers" :key="row.id" class="hover:bg-slate-50/70 transition-colors">
+              <td class="px-4 py-3 min-w-0">
+                <div class="flex items-center gap-3 min-w-0">
+                  <div class="h-8 w-8 rounded-full bg-white border border-slate-200 text-slate-700 font-medium text-xs flex items-center justify-center shrink-0">
+                    {{ initialsOf(row.name) }}
                   </div>
-                </td>
-                <td class="px-6 py-3.5 text-zinc-600">{{ row.email }}</td>
-                <td class="px-6 py-3.5">
-                  <span class="inline-flex items-center rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-xs font-medium text-zinc-800 tabular-nums">
-                    {{ row.count }} arsip
-                  </span>
-                </td>
-                <td class="px-6 py-3.5 text-zinc-500 whitespace-nowrap tabular-nums">{{ formatDateTime(row.lastUpload) }}</td>
-              </tr>
-              <tr v-if="recentUploadUsers.length === 0">
-                <td colspan="4" class="px-6 py-10 text-center text-sm text-zinc-500">
-                  Belum ada aktivitas upload pengguna di instansi ini.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                  <span class="font-medium text-slate-900 truncate">{{ row.name }}</span>
+                </div>
+              </td>
+              <td class="px-3 py-3 text-slate-600 truncate hidden sm:table-cell">{{ row.email }}</td>
+              <td class="px-3 py-3">
+                <span class="inline-flex items-center rounded border border-slate-200 bg-white px-2 py-0.5 text-xs font-medium text-slate-800 tabular-nums">
+                  {{ row.count }} arsip
+                </span>
+              </td>
+              <td class="px-4 py-3 text-slate-500 text-xs whitespace-nowrap tabular-nums">{{ formatDateTime(row.lastUpload) }}</td>
+            </tr>
+            <tr v-if="recentUploadUsers.length === 0">
+              <td colspan="4" class="px-6 py-10 text-center text-sm text-slate-500">
+                Belum ada aktivitas upload pengguna di instansi ini.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </template>
   </div>

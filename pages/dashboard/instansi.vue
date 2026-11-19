@@ -40,100 +40,96 @@
     </div>
 
     <!-- Instansi Table -->
-    <div class="bg-white rounded-lg border border-zinc-200 shadow-sm overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-zinc-200 text-sm">
-          <thead class="bg-zinc-50/80">
-            <tr>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Instansi / Sekolah</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">URL Landing Page</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Admin Instansi</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Total User</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Total Arsip</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Dibuat</th>
-              <th class="px-4 py-3 text-right text-xs font-medium text-zinc-500 w-14">Aksi</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-zinc-100 bg-white">
-            <tr v-for="inst in filtered" :key="inst.id" class="hover:bg-zinc-50/80 transition-colors">
-              <td class="px-4 py-3.5">
-                <div class="flex items-center gap-3">
-                  <img
-                    :src="app.getInstansiLogoUrl(inst)"
-                    :alt="inst.nama"
-                    class="h-10 w-10 rounded-lg object-cover border border-zinc-200 bg-white shrink-0"
-                  />
-                  <div class="min-w-0">
-                    <div class="font-semibold text-zinc-950 truncate">{{ inst.nama }}</div>
-                    <div class="text-xs text-zinc-500 truncate max-w-xs">{{ inst.slogan || '-' }}</div>
-                  </div>
-                </div>
-              </td>
-              <td class="px-4 py-3.5 whitespace-nowrap">
-                <div class="flex items-center gap-2">
-                  <NuxtLink
-                    :to="`/${inst.slug}`"
-                    target="_blank"
-                    class="inline-flex items-center gap-1 rounded-md border border-zinc-200 bg-zinc-50 px-2.5 py-1 text-xs font-mono font-medium text-zinc-800 hover:bg-zinc-100"
-                    title="Buka Landing Page di tab baru"
-                  >
-                    <span>/{{ inst.slug }}</span>
-                    <svg class="w-3.5 h-3.5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                    </svg>
-                  </NuxtLink>
-                </div>
-              </td>
-              <td class="px-4 py-3.5 text-xs">
-                <div v-if="adminsOfInstansi(inst.id).length > 0" class="space-y-0.5">
-                  <div v-for="adm in adminsOfInstansi(inst.id)" :key="adm.id" class="font-medium text-zinc-800">
-                    {{ adm.name }} <span class="text-zinc-400">({{ adm.email }})</span>
-                  </div>
-                </div>
-                <span v-else class="text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md font-medium">
-                  Belum ada Admin
-                </span>
-              </td>
-              <td class="px-4 py-3.5 whitespace-nowrap text-xs text-zinc-700 tabular-nums">
-                {{ usersCountOfInstansi(inst.id) }} user
-              </td>
-              <td class="px-4 py-3.5 whitespace-nowrap text-xs text-zinc-700 tabular-nums">
-                {{ arsipsCountOfInstansi(inst.id) }} arsip
-              </td>
-              <td class="px-4 py-3.5 text-zinc-500 whitespace-nowrap text-xs tabular-nums">
-                {{ formatDate(inst.created_at) }}
-              </td>
-              <td class="px-4 py-3.5 text-right whitespace-nowrap w-14">
-                <RowActionMenu
-                  :items="[
-                    {
-                      label: 'Buka Landing Page',
-                      to: `/${inst.slug}`,
-                      icon: 'view'
-                    },
-                    {
-                      label: 'Edit Instansi',
-                      onClick: () => openEdit(inst),
-                      icon: 'edit'
-                    },
-                    {
-                      label: 'Hapus Instansi',
-                      onClick: () => handleDelete(inst),
-                      icon: 'delete',
-                      variant: 'danger'
-                    }
-                  ]"
+    <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+      <table class="w-full table-fixed divide-y divide-slate-200 text-sm">
+        <thead class="bg-white">
+          <tr>
+            <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600">Instansi / Sekolah</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-40">URL Landing Page</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-48 hidden md:table-cell">Admin Instansi</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-24 hidden lg:table-cell">User</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-24 hidden lg:table-cell">Arsip</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-28 hidden sm:table-cell">Dibuat</th>
+            <th class="px-3 py-3 text-right text-xs font-semibold text-slate-600 w-14">Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 bg-white">
+          <tr v-for="inst in filtered" :key="inst.id" class="hover:bg-slate-50/70 transition-colors">
+            <td class="px-3 py-3 min-w-0">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <img
+                  :src="app.getInstansiLogoUrl(inst)"
+                  :alt="inst.nama"
+                  class="h-9 w-9 rounded object-cover border border-slate-200 bg-white shrink-0"
                 />
-              </td>
-            </tr>
-            <tr v-if="filtered.length === 0">
-              <td colspan="7" class="px-6 py-10 text-center text-zinc-500">
-                Belum ada instansi terdaftar. Klik <strong>Tambah Instansi</strong> untuk memulai.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+                <div class="min-w-0 flex-1">
+                  <div class="font-semibold text-slate-900 truncate">{{ inst.nama }}</div>
+                  <div class="text-xs text-slate-500 truncate">{{ inst.slogan || '-' }}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-2.5 py-3 min-w-0">
+              <NuxtLink
+                :to="`/${inst.slug}`"
+                target="_blank"
+                class="inline-flex max-w-full items-center gap-1 rounded border border-slate-200 bg-white px-2 py-1 text-xs font-mono font-medium text-slate-800 hover:bg-slate-50"
+                title="Buka Landing Page di tab baru"
+              >
+                <span class="truncate">/{{ inst.slug }}</span>
+                <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                </svg>
+              </NuxtLink>
+            </td>
+            <td class="px-2.5 py-3 text-xs hidden md:table-cell min-w-0">
+              <div v-if="adminsOfInstansi(inst.id).length > 0" class="space-y-0.5 min-w-0">
+                <div v-for="adm in adminsOfInstansi(inst.id)" :key="adm.id" class="font-medium text-slate-800 truncate" :title="`${adm.name} (${adm.email})`">
+                  {{ adm.name }} <span class="text-slate-400">({{ adm.email }})</span>
+                </div>
+              </div>
+              <span v-else class="text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded font-medium">
+                Belum ada Admin
+              </span>
+            </td>
+            <td class="px-2.5 py-3 text-xs text-slate-700 tabular-nums hidden lg:table-cell">
+              {{ usersCountOfInstansi(inst.id) }} user
+            </td>
+            <td class="px-2.5 py-3 text-xs text-slate-700 tabular-nums hidden lg:table-cell">
+              {{ arsipsCountOfInstansi(inst.id) }} arsip
+            </td>
+            <td class="px-2.5 py-3 text-slate-500 text-xs tabular-nums hidden sm:table-cell">
+              {{ formatDate(inst.created_at) }}
+            </td>
+            <td class="px-3 py-3 text-right w-14">
+              <RowActionMenu
+                :items="[
+                  {
+                    label: 'Buka Landing Page',
+                    to: `/${inst.slug}`,
+                    icon: 'view'
+                  },
+                  {
+                    label: 'Edit Instansi',
+                    onClick: () => openEdit(inst),
+                    icon: 'edit'
+                  },
+                  {
+                    label: 'Hapus Instansi',
+                    onClick: () => handleDelete(inst),
+                    icon: 'delete',
+                    variant: 'danger'
+                  }
+                ]"
+              />
+            </td>
+          </tr>
+          <tr v-if="filtered.length === 0">
+            <td colspan="7" class="px-6 py-10 text-center text-slate-500">
+              Belum ada instansi terdaftar. Klik <strong>Tambah Instansi</strong> untuk memulai.
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- Modal Form Create / Edit Instansi -->
@@ -229,7 +225,7 @@
           </div>
 
           <!-- Optional Initial Admin Creation when adding new Instansi -->
-          <div v-if="!editingId" class="rounded-lg border border-zinc-200 bg-zinc-50/60 p-4 space-y-3">
+          <div v-if="!editingId" class="rounded-lg border border-slate-200 bg-white p-4 space-y-3">
             <div class="flex items-center justify-between">
               <div>
                 <h4 class="text-sm font-semibold text-zinc-950">Sekaligus Buat Akun Admin Instansi (Opsional)</h4>

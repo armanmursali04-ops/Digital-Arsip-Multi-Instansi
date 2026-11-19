@@ -30,52 +30,50 @@
       </select>
     </div>
 
-    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 text-sm">
-          <thead class="bg-gray-50">
-            <tr>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Aktivitas</th>
-              <th v-if="isSuperAdmin" class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Instansi</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Model / Data</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Pengguna</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Waktu</th>
-              <th class="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase">Aksi</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-100 bg-white">
-            <tr v-for="log in filtered" :key="log.id" class="hover:bg-gray-50">
-              <td class="px-4 py-3">
-                <span :class="[activityBadgeClass(log.description), 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold']">
-                  {{ log.description }}
-                </span>
-              </td>
-              <td v-if="isSuperAdmin" class="px-4 py-3 text-xs text-gray-600">
-                {{ instansiNameOfLog(log) }}
-              </td>
-              <td class="px-4 py-3 font-medium text-gray-800">
-                {{ app.getActivitySubjectName(log) }}
-              </td>
-              <td class="px-4 py-3 text-gray-600">{{ log.causer_name || 'System' }}</td>
-              <td class="px-4 py-3 text-gray-600 whitespace-nowrap">{{ formatDateTime(log.created_at) }}</td>
-              <td class="px-4 py-3 text-right whitespace-nowrap w-14">
-                <RowActionMenu
-                  :items="[
-                    {
-                      label: 'Lihat Detail',
-                      onClick: () => { selectedLog = log },
-                      icon: 'view'
-                    }
-                  ]"
-                />
-              </td>
-            </tr>
-            <tr v-if="filtered.length === 0">
-              <td :colspan="isSuperAdmin ? 6 : 5" class="px-6 py-8 text-center text-gray-500">Belum ada catatan aktivitas.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+      <table class="w-full table-fixed divide-y divide-slate-200 text-sm">
+        <thead class="bg-white">
+          <tr>
+            <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600 w-28">Aktivitas</th>
+            <th v-if="isSuperAdmin" class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-40">Instansi</th>
+            <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600">Model / Data</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-36 hidden sm:table-cell">Pengguna</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-36">Waktu</th>
+            <th class="px-3 py-3 text-right text-xs font-semibold text-slate-600 w-14">Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 bg-white">
+          <tr v-for="log in filtered" :key="log.id" class="hover:bg-slate-50/70">
+            <td class="px-3 py-3">
+              <span :class="[activityBadgeClass(log.description), 'inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold']">
+                {{ log.description }}
+              </span>
+            </td>
+            <td v-if="isSuperAdmin" class="px-2.5 py-3 text-xs text-slate-600 truncate">
+              {{ instansiNameOfLog(log) }}
+            </td>
+            <td class="px-3 py-3 font-medium text-slate-800 truncate" :title="app.getActivitySubjectName(log)">
+              {{ app.getActivitySubjectName(log) }}
+            </td>
+            <td class="px-2.5 py-3 text-slate-600 text-xs truncate hidden sm:table-cell">{{ log.causer_name || 'System' }}</td>
+            <td class="px-2.5 py-3 text-slate-500 text-xs whitespace-nowrap tabular-nums">{{ formatDateTime(log.created_at) }}</td>
+            <td class="px-3 py-3 text-right w-14">
+              <RowActionMenu
+                :items="[
+                  {
+                    label: 'Lihat Detail',
+                    onClick: () => { selectedLog = log },
+                    icon: 'view'
+                  }
+                ]"
+              />
+            </td>
+          </tr>
+          <tr v-if="filtered.length === 0">
+            <td :colspan="isSuperAdmin ? 6 : 5" class="px-6 py-8 text-center text-slate-500">Belum ada catatan aktivitas.</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- Detail Modal (Data Baru vs Data Lama) -->

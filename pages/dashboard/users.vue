@@ -30,78 +30,76 @@
     </div>
 
     <!-- Users Table -->
-    <div class="bg-white rounded-lg border border-zinc-200 shadow-sm overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-zinc-200 text-sm">
-          <thead class="bg-zinc-50/80">
-            <tr>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Nama</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Email</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Role</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Cakupan Akses Data</th>
-              <th class="px-4 py-3 text-left text-xs font-medium text-zinc-500">Dibuat</th>
-              <th class="px-4 py-3 text-right text-xs font-medium text-zinc-500 w-14">Aksi</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-zinc-100 bg-white">
-            <tr v-for="u in users" :key="u.id" class="hover:bg-zinc-50/80 transition-colors">
-              <td class="px-4 py-3.5 font-medium text-zinc-950 whitespace-nowrap">{{ u.name }}</td>
-              <td class="px-4 py-3.5 text-zinc-600 whitespace-nowrap">{{ u.email }}</td>
-              <td class="px-4 py-3.5 whitespace-nowrap">
-                <span
-                  :class="[
-                    roleBadgeClass(u.role),
-                    'inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium'
-                  ]"
-                >
-                  {{ formatRoleLabel(u.role) }}
-                </span>
-              </td>
-              <td class="px-4 py-3.5 whitespace-nowrap text-xs text-zinc-600">
-                <span
-                  v-if="normalizeRole(u.role) === 'admin'"
-                  class="inline-flex items-center px-2 py-0.5 rounded-md border border-zinc-200 bg-zinc-100 text-zinc-700 font-medium"
-                >
-                  Akses Penuh Instansi
-                </span>
-                <span
-                  v-else-if="app.getUserCustomPermissions(u.id)"
-                  class="inline-flex items-center px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 ring-1 ring-inset ring-amber-200 font-medium"
-                >
-                  {{ formatUserScopeSummary(u.id) }}
-                </span>
-                <span v-else class="text-zinc-500">
-                  Mengikuti Role {{ formatRoleLabel(u.role) }}
-                </span>
-              </td>
-              <td class="px-4 py-3.5 text-zinc-500 whitespace-nowrap tabular-nums">{{ formatDate(u.created_at) }}</td>
-              <td class="px-4 py-3.5 text-right whitespace-nowrap w-14">
-                <RowActionMenu
-                  v-if="normalizeRole(u.role) !== 'admin'"
-                  :items="[
-                    {
-                      label: 'Edit & Atur Akses',
-                      onClick: () => openEdit(u),
-                      icon: 'edit'
-                    },
-                    {
-                      label: 'Hapus User',
-                      onClick: () => handleDelete(u.id),
-                      icon: 'delete',
-                      variant: 'danger',
-                      show: u.id !== currentUser?.id
-                    }
-                  ]"
-                />
-                <span v-else class="text-xs text-zinc-400">Admin</span>
-              </td>
-            </tr>
-            <tr v-if="users.length === 0">
-              <td colspan="6" class="px-6 py-10 text-center text-zinc-500">Belum ada pengguna terdaftar di instansi ini.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+      <table class="w-full table-fixed divide-y divide-slate-200 text-sm">
+        <thead class="bg-white">
+          <tr>
+            <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600">Nama</th>
+            <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600">Email</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-32">Role</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-48 hidden md:table-cell">Cakupan Akses Data</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-28 hidden sm:table-cell">Dibuat</th>
+            <th class="px-3 py-3 text-right text-xs font-semibold text-slate-600 w-14">Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 bg-white">
+          <tr v-for="u in users" :key="u.id" class="hover:bg-slate-50/70 transition-colors">
+            <td class="px-3 py-3 font-medium text-slate-900 truncate">{{ u.name }}</td>
+            <td class="px-3 py-3 text-slate-600 truncate">{{ u.email }}</td>
+            <td class="px-2.5 py-3">
+              <span
+                :class="[
+                  roleBadgeClass(u.role),
+                  'inline-flex items-center px-2 py-0.5 rounded text-xs font-medium'
+                ]"
+              >
+                {{ formatRoleLabel(u.role) }}
+              </span>
+            </td>
+            <td class="px-2.5 py-3 text-xs text-slate-600 hidden md:table-cell truncate">
+              <span
+                v-if="normalizeRole(u.role) === 'admin'"
+                class="inline-flex items-center px-2 py-0.5 rounded border border-slate-200 bg-white text-slate-700 font-medium"
+              >
+                Akses Penuh Instansi
+              </span>
+              <span
+                v-else-if="app.getUserCustomPermissions(u.id)"
+                class="inline-flex items-center px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200 font-medium"
+              >
+                {{ formatUserScopeSummary(u.id) }}
+              </span>
+              <span v-else class="text-slate-500">
+                Mengikuti Role {{ formatRoleLabel(u.role) }}
+              </span>
+            </td>
+            <td class="px-2.5 py-3 text-slate-500 text-xs tabular-nums hidden sm:table-cell">{{ formatDate(u.created_at) }}</td>
+            <td class="px-3 py-3 text-right w-14">
+              <RowActionMenu
+                v-if="normalizeRole(u.role) !== 'admin'"
+                :items="[
+                  {
+                    label: 'Edit & Atur Akses',
+                    onClick: () => openEdit(u),
+                    icon: 'edit'
+                  },
+                  {
+                    label: 'Hapus User',
+                    onClick: () => handleDelete(u.id),
+                    icon: 'delete',
+                    variant: 'danger',
+                    show: u.id !== currentUser?.id
+                  }
+                ]"
+              />
+              <span v-else class="text-xs text-slate-400">Admin</span>
+            </td>
+          </tr>
+          <tr v-if="users.length === 0">
+            <td colspan="6" class="px-6 py-10 text-center text-slate-500">Belum ada pengguna terdaftar di instansi ini.</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <!-- Modal Form -->
@@ -180,7 +178,7 @@
           </div>
 
           <!-- Role-specific Data Access Controls -->
-          <div class="rounded-lg border border-zinc-200 p-4 space-y-4 bg-zinc-50/50">
+          <div class="rounded-lg border border-slate-200 p-4 space-y-4 bg-white">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
               <div>
                 <h4 class="text-sm font-semibold text-zinc-950">Atur Data yang Bisa Dilihat / Diedit</h4>

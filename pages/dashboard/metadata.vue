@@ -50,41 +50,45 @@
     </div>
 
     <!-- Table -->
-    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200 text-sm">
-          <thead class="bg-gray-50">
-            <tr>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Judul</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Kategori</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Subjek</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Pengunggah</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Tanggal Upload</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Nama File Asli</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Versi</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-gray-100 bg-white">
-            <tr v-for="item in filtered" :key="item.id" class="hover:bg-gray-50">
-              <td class="px-4 py-3 font-medium text-gray-900">{{ item.judul }}</td>
-              <td class="px-4 py-3 text-gray-600">{{ app.getKategori(item.kategori_id)?.nama || '-' }}</td>
-              <td class="px-4 py-3 text-gray-600">{{ app.getSubjek(item.subjek_id)?.nama || '-' }}</td>
-              <td class="px-4 py-3 text-gray-600">{{ app.getUserName(item) }}</td>
-              <td class="px-4 py-3 text-gray-600 whitespace-nowrap">{{ formatDateTime(item.created_at) }}</td>
-              <td class="px-4 py-3 text-gray-600">
-                <div class="inline-flex items-center gap-2">
-                  <FileTypeIcon :type="getDocType(item)" size="sm" />
-                  <span>{{ item.original_file_name || '-' }}</span>
-                </div>
-              </td>
-              <td class="px-4 py-3 font-semibold text-primary-700">v{{ item.version }}</td>
-            </tr>
-            <tr v-if="filtered.length === 0">
-              <td colspan="7" class="px-6 py-8 text-center text-gray-500">Tidak ada data metadata.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="bg-white rounded-lg border border-slate-200 overflow-hidden">
+      <table class="w-full table-fixed divide-y divide-slate-200 text-sm">
+        <thead class="bg-white">
+          <tr>
+            <th class="px-3 py-3 text-left text-xs font-semibold text-slate-600">Judul</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-32">Kategori</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-36 hidden md:table-cell">Subjek</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-28 hidden lg:table-cell">Pengunggah</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-32">Tanggal Upload</th>
+            <th class="px-2.5 py-3 text-left text-xs font-semibold text-slate-600 w-44 hidden sm:table-cell">Nama File Asli</th>
+            <th class="px-3 py-3 text-right text-xs font-semibold text-slate-600 w-16">Versi</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 bg-white">
+          <tr v-for="item in filtered" :key="item.id" class="hover:bg-slate-50/70">
+            <td class="px-3 py-3 font-medium text-slate-900 truncate" :title="item.judul">{{ item.judul }}</td>
+            <td class="px-2.5 py-3 text-slate-600 text-xs truncate" :title="app.getKategori(item.kategori_id)?.nama || '-'">
+              {{ app.getKategori(item.kategori_id)?.nama || '-' }}
+            </td>
+            <td class="px-2.5 py-3 text-slate-600 text-xs truncate hidden md:table-cell" :title="app.getSubjek(item.subjek_id)?.nama || '-'">
+              {{ app.getSubjek(item.subjek_id)?.nama || '-' }}
+            </td>
+            <td class="px-2.5 py-3 text-slate-600 text-xs truncate hidden lg:table-cell" :title="app.getUserName(item)">
+              {{ app.getUserName(item) }}
+            </td>
+            <td class="px-2.5 py-3 text-slate-500 text-xs whitespace-nowrap tabular-nums">{{ formatDateTime(item.created_at) }}</td>
+            <td class="px-2.5 py-3 text-slate-600 text-xs hidden sm:table-cell min-w-0">
+              <div class="flex items-center gap-2 min-w-0">
+                <FileTypeIcon :type="getDocType(item)" :show-label="false" size="sm" />
+                <span class="truncate" :title="item.original_file_name || '-'">{{ item.original_file_name || '-' }}</span>
+              </div>
+            </td>
+            <td class="px-3 py-3 text-right font-semibold text-[#1d4ed8] text-xs">v{{ item.version }}</td>
+          </tr>
+          <tr v-if="filtered.length === 0">
+            <td colspan="7" class="px-6 py-8 text-center text-slate-500">Tidak ada data metadata.</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
