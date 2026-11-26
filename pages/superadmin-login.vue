@@ -107,12 +107,6 @@
               {{ submitting ? 'Memverifikasi...' : 'Masuk' }}
             </button>
           </form>
-
-          <div class="rounded bg-slate-50 border border-slate-200 p-3 text-xs text-slate-600 space-y-1">
-            <div class="font-medium text-slate-800">Kredensial Bawaan:</div>
-            <div>Email: <code class="font-mono text-slate-900">superadmin@digitalarsip.id</code></div>
-            <div>Password: <code class="font-mono text-slate-900">password</code></div>
-          </div>
         </div>
       </div>
     </main>
